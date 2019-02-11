@@ -1,0 +1,12 @@
+{
+  "name": "webpack-anujs-antd-typescript",
+  "version": "0.0.1",
+  "description": "webpack anujs antd typescript",
+  "main": "index.js",
+  "author": "reamd7",
+  "license": "MIT",
+  "dependencies": {
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3"
+  }
+}
