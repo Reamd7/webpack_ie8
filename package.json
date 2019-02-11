@@ -22,6 +22,6 @@
     "webpack-cli": "^3.2.3"
   },
   "scripts": {
-    "build": "TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack"
+    "build": "TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack --config ./config/webpack.config.ts"
   }
 }

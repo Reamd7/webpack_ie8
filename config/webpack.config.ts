@@ -1,11 +1,11 @@
-import * as path from "./path";
+import path from "./path";
 import webpack from "webpack";
 
 const config: webpack.Configuration = {
-    mode:"production",
-    entry:`${path.SrcPath}/index.js`,
+    mode:"development",
+    entry:path.appIndexJs,
     output:{
-        path:path.DistPath,
+        path:path.appBuild,
         filename:"index.bundle.js"
     }
 };
