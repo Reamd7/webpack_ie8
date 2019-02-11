@@ -2,6 +2,39 @@
 # yarn lockfile v1
 
 
+"@types/anymatch@*":
+  version "1.3.0"
+  resolved "http://registry.npm.taobao.org/@types/anymatch/download/@types/anymatch-1.3.0.tgz#d1d55958d1fccc5527d4aba29fc9c4b942f563ff"
+  integrity sha1-0dVZWNH8zFUn1Kuin8nEuUL1Y/8=
+
+"@types/node@*", "@types/node@^10.12.24":
+  version "10.12.24"
+  resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-10.12.24.tgz#b13564af612a22a20b5d95ca40f1bffb3af315cf"
+  integrity sha1-sTVkr2EqIqILXZXKQPG/+zrzFc8=
+
+"@types/tapable@*":
+  version "1.0.4"
+  resolved "http://registry.npm.taobao.org/@types/tapable/download/@types/tapable-1.0.4.tgz#b4ffc7dc97b498c969b360a41eee247f82616370"
+  integrity sha1-tP/H3Je0mMlps2CkHu4kf4JhY3A=
+
+"@types/uglify-js@*":
+  version "3.0.4"
+  resolved "http://registry.npm.taobao.org/@types/uglify-js/download/@types/uglify-js-3.0.4.tgz#96beae23df6f561862a830b4288a49e86baac082"
+  integrity sha1-lr6uI99vVhhiqDC0KIpJ6GuqwII=
+  dependencies:
+    source-map "^0.6.1"
+
+"@types/webpack@^4.4.24":
+  version "4.4.24"
+  resolved "http://registry.npm.taobao.org/@types/webpack/download/@types/webpack-4.4.24.tgz#75bc301176066f566ec54151b6101c2b45abb8b2"
+  integrity sha1-dbwwEXYGb1ZuxUFRthAcK0WruLI=
+  dependencies:
+    "@types/anymatch" "*"
+    "@types/node" "*"
+    "@types/tapable" "*"
+    "@types/uglify-js" "*"
+    source-map "^0.6.0"
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "http://registry.npm.taobao.org/@webassemblyjs/ast/download/@webassemblyjs/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
@@ -227,6 +260,11 @@ are-we-there-yet@~1.1.2:
   dependencies:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
+
+arg@^4.1.0:
+  version "4.1.0"
+  resolved "http://registry.npm.taobao.org/arg/download/arg-4.1.0.tgz#583c518199419e0037abb74062c37f8519e575f0"
+  integrity sha1-WDxRgZlBngA3q7dAYsN/hRnldfA=
 
 arr-diff@^4.0.0:
   version "4.0.0"
@@ -770,6 +808,11 @@ detect-libc@^1.0.2:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/detect-libc/download/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
   integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
+
+diff@^3.1.0:
+  version "3.5.0"
+  resolved "http://registry.npm.taobao.org/diff/download/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
+  integrity sha1-gAwN0eCov7yVg1wgKtIg/jF+WhI=
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -1504,6 +1547,11 @@ make-dir@^1.0.0:
   integrity sha1-ecEDO4BRW9bSTsmTPoYMp17ifww=
   dependencies:
     pify "^3.0.0"
+
+make-error@^1.1.1:
+  version "1.3.5"
+  resolved "http://registry.npm.taobao.org/make-error/download/make-error-1.3.5.tgz#efe4e81f6db28cadd605c70f29c831b58ef776c8"
+  integrity sha1-7+ToH22yjK3WBccPKcgxtY73dsg=
 
 map-age-cleaner@^0.1.1:
   version "0.1.3"
@@ -2359,7 +2407,7 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
-source-map-support@~0.5.9:
+source-map-support@^0.5.6, source-map-support@~0.5.9:
   version "0.5.10"
   resolved "http://registry.npm.taobao.org/source-map-support/download/source-map-support-0.5.10.tgz#2214080bc9d51832511ee2bab96e3c2f9353120c"
   integrity sha1-IhQIC8nVGDJRHuK6uW48L5NTEgw=
@@ -2584,6 +2632,17 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+ts-node@^8.0.2:
+  version "8.0.2"
+  resolved "http://registry.npm.taobao.org/ts-node/download/ts-node-8.0.2.tgz#9ecdf8d782a0ca4c80d1d641cbb236af4ac1b756"
+  integrity sha1-ns3414KgykyA0dZBy7I2r0rBt1Y=
+  dependencies:
+    arg "^4.1.0"
+    diff "^3.1.0"
+    make-error "^1.1.1"
+    source-map-support "^0.5.6"
+    yn "^3.0.0"
+
 tslib@^1.9.0:
   version "1.9.3"
   resolved "http://registry.npm.taobao.org/tslib/download/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
@@ -2598,6 +2657,11 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "http://registry.npm.taobao.org/typedarray/download/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typescript@^3.3.3:
+  version "3.3.3"
+  resolved "http://registry.npm.taobao.org/typescript/download/typescript-3.3.3.tgz#f1657fc7daa27e1a8930758ace9ae8da31403221"
+  integrity sha1-8WV/x9qifhqJMHWKzpro2jFAMiE=
 
 union-value@^1.0.0:
   version "1.0.0"
@@ -2835,3 +2899,8 @@ yargs@^12.0.4:
     which-module "^2.0.0"
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
+
+yn@^3.0.0:
+  version "3.0.0"
+  resolved "http://registry.npm.taobao.org/yn/download/yn-3.0.0.tgz#0073c6b56e92aed652fbdfd62431f2d6b9a7a091"
+  integrity sha1-AHPGtW6SrtZS+9/WJDHy1rmnoJE=
