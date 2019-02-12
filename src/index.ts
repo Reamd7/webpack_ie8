@@ -1,6 +1,6 @@
-let a = {
-    adaasd:1
-}
+let a = [
+    1,2
+]
 
 for (const iterator of a) {
     console.log(iterator)
