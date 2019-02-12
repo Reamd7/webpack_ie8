@@ -1,8 +1,8 @@
 import ProjectPath from "./path";
 import webpack from "webpack";
-import path from "path";
 const es3ifyPlugin = require("es3ify-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+import InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin';
 
 const config: webpack.Configuration = {
   mode: "development",
@@ -10,9 +10,9 @@ const config: webpack.Configuration = {
   entry: ProjectPath.appIndexJs,
   output: {
     path: ProjectPath.appBuild,
-    filename: "index.bundle.js",
+    filename: "index.[hash].js",
     publicPath: "/",
-    chunkFilename: "js/[name].js"
+    chunkFilename: "js/[name].[hash].js"
   },
   resolve: {
     extensions: [".js", ".json", ".jsx"],
@@ -34,14 +34,14 @@ const config: webpack.Configuration = {
             presets: [
               [
                 "@babel/preset-env",
-                // {
-                //   targets: {
-                //     browsers: ["last 2 versions", "ie >= 7"]
-                //   },
-                //   modules: "commonjs",
-                //   useBuiltIns: true,
-                //   debug: false
-                // }
+                {
+                  targets: {
+                    browsers: ["last 2 versions", "ie >= 7"]
+                  },
+                  modules: "commonjs",
+                  // useBuiltIns: true,
+                  // debug: false
+                }
               ],
               "@babel/preset-react"
             ]
@@ -81,7 +81,6 @@ const config: webpack.Configuration = {
         removeComments: false, // 移除HTML中的注释
         collapseWhitespace: false // 删除空白符与换行符
       },
-      chunks: ["production"]
     })
   ]
 };
