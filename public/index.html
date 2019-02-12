@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <base href="./">
+    <meta name="theme-color" content="#000000" />
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+    <!--[if IE 6]>
+        <script>window.polyfill = "ie-6"</script>
+        <script src="polyfills/ie-6.js"></script>
+    <![endif]-->
+    <!--[if IE 7]>
+        <script>window.polyfill = "ie-7"</script>
+        <script src="polyfills/ie-7.js"></script>
+    <![endif]-->
+    <!--[if IE 8]>
+        <script>window.polyfill = "ie-8"</script> 
+        <script src="polyfills/ie-8.js"></script>
+    <![endif]-->
+    <!--[if IE 9]>
+        <script>window.polyfill = "ie-9"</script> 
+        <script src="polyfills/ie-9.js"></script>
+    <![endif]-->
+
+    <script>
+        void (function () {
+            if (!window.polyfill) {
+                // 从 localStorage 中取 
+                try {
+                    window.polyfill = localStorage.getItem("polyfill")
+                } catch (error) {
+                    window.polyfill = null
+                }
+                if (!window.polyfill) {
+                    function getVersionMethod (RE) {
+                        return function (userAgent) {
+                            var raw = userAgent.toLowerCase().match(RE);
+                            return raw ? parseInt(raw[1], 10) : false;
+                        };
+                    }
+                    var getVersion = {
+                        chrome: getVersionMethod(/chrom(?:e|ium)\/([0-9]+)\./),
+                        firefox: getVersionMethod(/firefox\/([0-9]+\.*[0-9]*)/),
+                        safari: getVersionMethod(/version\/([0-9]+).[0-9]+.[0-9]+ safari/),
+                        ie: getVersionMethod(/(?:msie |rv:)([0-9]+).[0-9]+/),
+                        edge: getVersionMethod(/edge\/([0-9]+).[0-9]+.[0-9]+/)
+                    };
+                    // 特征 判断 这个方法很重要
+                    function getBrowser() {
+                        // Firefox 1.0+
+                        var isFirefox = typeof InstallTrigger !== 'undefined';
+                        // Safari 3.0+ "[object HTMLElementConstructor]"
+                        var isSafari =
+                            /constructor/i.test(window.HTMLElement) ||
+                            (function (p) {
+                                return p.toString() === '[object SafariRemoteNotification]';
+                            })(!window['safari'] || window.safari.pushNotification);
+                        // Internet Explorer 6-11
+                        var isIE = /* @cc_on!@ */ false || !!document.documentMode;
+                        // Edge 20+
+                        var isEdge = !isIE && !!window.StyleMedia;
+                        // Chrome or Chromium 1+
+                        var isChrome = !!window.chrome && !!window.chrome.loadTimes;
+
+                        var browser = isChrome
+                            ? 'chrome'
+                            : isFirefox
+                                ? 'firefox'
+                                : isSafari
+                                    ? 'safari'
+                                    : isIE
+                                        ? 'ie'
+                                        : isEdge
+                                            ? 'edge'
+                                            : false;
+
+                        var version = getVersion[browser](navigator.userAgent);
+                        return { browser: browser, version: version };
+                    }
+                    
+                    var _broswer = getBrowser()
+
+                    if (_broswer["browser"] && _broswer["version"]){
+                        window.polyfill = _broswer["browser"] + "-" + _broswer["version"]
+                    }else{
+                        window.polyfill = "all"
+                    }
+                    // localStorage.setItem("polyfill",window.polyfill)
+                }
+
+                // ===
+                var loadJS = function loadJS(sUrl, onerror) {
+                    var _script = document.createElement('script');
+                    _script.setAttribute('charset', 'utf-8');
+                    _script.setAttribute('type', 'text/javascript');
+                    onerror && (_script.onerror = onerror);
+                    _script.setAttribute('src', sUrl);
+                    document.getElementsByTagName('head')[0].appendChild(_script);
+                };
+                loadJS("polyfills/" + window.polyfill + ".js" , function () {
+                    loadJS("polyfills/all.js")
+                })
+            }
+
+        }());
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
