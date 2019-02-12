@@ -1,11 +1,15 @@
-import path from "./path";
+import ProjectPath from "./path";
 import webpack from "webpack";
+import path from "path";
+const es3ifyPlugin = require("es3ify-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const config: webpack.Configuration = {
   mode: "development",
-  entry: path.appIndexJs,
+  devtool: "cheap-module-source-map",
+  entry: ProjectPath.appIndexJs,
   output: {
-    path: path.appBuild,
+    path: ProjectPath.appBuild,
     filename: "index.bundle.js",
     publicPath: "/",
     chunkFilename: "js/[name].js"
@@ -19,7 +23,67 @@ const config: webpack.Configuration = {
       devtools: "anujs/lib/devtools",
       "create-react-class": "anujs/lib/createClass"
     }
-  }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|mjs|jsx|ts|tsx)$/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                "@babel/preset-env",
+                // {
+                //   targets: {
+                //     browsers: ["last 2 versions", "ie >= 7"]
+                //   },
+                //   modules: "commonjs",
+                //   useBuiltIns: true,
+                //   debug: false
+                // }
+              ],
+              "@babel/preset-react"
+            ]
+            // plugins: ["transform-runtime"]
+          }
+        },
+        include: [ProjectPath.appSrc]
+      },
+      {
+        test: /\.css$/,
+        include: [ProjectPath.appSrc],
+        use: ["style-loader", "css-loadeer"]
+      },
+      {
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 100,
+              name: "asset/[name].[ext]"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new es3ifyPlugin(),
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: ProjectPath.appHtml,
+      inject: "body",
+      hase: false,
+      minify: {
+        // 压缩HTML文件
+        removeComments: false, // 移除HTML中的注释
+        collapseWhitespace: false // 删除空白符与换行符
+      },
+      chunks: ["production"]
+    })
+  ]
 };
 
 export default config;
