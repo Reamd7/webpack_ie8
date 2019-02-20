@@ -10,7 +10,8 @@
     "@types/react-dom": "^16.8.0",
     "anujs": "^1.5.0",
     "react": "^16.8.1",
-    "react-dom": "^16.8.1"
+    "react-dom": "^16.8.1",
+    "ts-loader": "^5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

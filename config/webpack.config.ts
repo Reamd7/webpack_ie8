@@ -2,7 +2,7 @@ import ProjectPath from "./path";
 import webpack from "webpack";
 const es3ifyPlugin = require("es3ify-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-import InlineChunkHtmlPlugin from 'react-dev-utils/InlineChunkHtmlPlugin';
+import InlineChunkHtmlPlugin from "react-dev-utils/InlineChunkHtmlPlugin";
 
 const config: webpack.Configuration = {
   mode: "development",
@@ -15,7 +15,7 @@ const config: webpack.Configuration = {
     chunkFilename: "js/[name].[hash].js"
   },
   resolve: {
-    extensions: [".js", ".json", ".jsx"],
+    extensions: [".js", ".json", ".jsx" , ".ts" , ".tsx"],
     alias: {
       react: "anujs/dist/ReactIE.js",
       "react-dom": "anujs/dist/ReactIE.js",
@@ -27,7 +27,21 @@ const config: webpack.Configuration = {
   module: {
     rules: [
       {
-        test: /\.(js|mjs|jsx|ts|tsx)$/,
+        test: /\.(ts|tsx)?$/,
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              "compilerOptions": {
+                /* Basic Options */
+                "target": "es3",
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(js|mjs|jsx)$/,
         use: {
           loader: "babel-loader",
           options: {
@@ -38,7 +52,31 @@ const config: webpack.Configuration = {
                   targets: {
                     browsers: ["last 2 versions", "ie >= 7"]
                   },
-                  modules: "commonjs",
+                  modules: "commonjs"
+                  // useBuiltIns: true,
+                  // debug: false
+                }
+              ],
+              "@babel/preset-react"
+            ]
+            // plugins: ["transform-runtime"]
+          }
+        },
+        include: [ProjectPath.appSrc]
+      },
+      {
+        test: /\.(js|mjs|jsx)$/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  targets: {
+                    browsers: ["last 2 versions", "ie >= 7"]
+                  },
+                  modules: "commonjs"
                   // useBuiltIns: true,
                   // debug: false
                 }
@@ -80,7 +118,7 @@ const config: webpack.Configuration = {
         // 压缩HTML文件
         removeComments: false, // 移除HTML中的注释
         collapseWhitespace: false // 删除空白符与换行符
-      },
+      }
     })
   ]
 };
