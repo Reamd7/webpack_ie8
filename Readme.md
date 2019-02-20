@@ -5,7 +5,7 @@
 - [x] ts-loader的引入 / babel-loader 对 typescript 的处理
 - [ ] 各种plugin的支持
   - [x] babel
-  - [ ] typescript
+  - [x] typescript
   - [x] browserlist
   - [ ] eslint / eslintignore
   - [ ] tslint / tslintignore
@@ -25,5 +25,6 @@
   - [x] 引入了 html-webpack-plugin es3ify-webpack-plugin 
   - [x] babel-loader babel-preset-react-app @babel/core browserlistrc
   - [x] 4. 引入 typescript 
-    - [ ] 最新版webpack的runtime使用了Object.defineProperty 需要重写
-  - [ ]  模仿 anujs-webpack4-ie7-8 测试。
+  - [x] 5. ~~模仿 anujs-webpack4-ie7-8 测试。~~ 模仿 anu-ie8-example 的demo 代码
+  == 基本可用 == 
+  - [ ] 6. 模仿antd 的组件学习编写可用的组件
