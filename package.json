@@ -11,6 +11,7 @@
     "anujs": "^1.5.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
+    "react-with-hooks": "^1.1.6",
     "ts-loader": "^5.3.3"
   },
   "devDependencies": {

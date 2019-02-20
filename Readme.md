@@ -32,4 +32,5 @@ IE9+ 就可以使用最轻量的动态polyfill . (基于 polyfill-service )
   - [x] 4. 引入 typescript 
   - [x] 5. ~~模仿 anujs-webpack4-ie7-8 测试。~~ 模仿 anu-ie8-example 的demo 代码
        == 基本可用 == 
-  - [ ] 6. 模仿antd 的组件学习编写可用的组件
+  - [ ] 6. react-with-hook
+  - [ ] 7. 模仿antd 的组件学习编写可用的组件

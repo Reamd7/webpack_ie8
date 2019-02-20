@@ -1,6 +1,7 @@
 //上面这几个可以单独打包
 import  React  from 'react';
 import  ReactDOM  from 'react-dom';
+import 'react-with-hooks/polyfill';
 
 var container = document.getElementById('root');
 interface HInputProps{
