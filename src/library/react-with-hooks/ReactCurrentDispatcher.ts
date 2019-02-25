@@ -8,14 +8,28 @@
 
 /**
  * Keeps track of the current dispatcher.
- * todo fix type define
  */
-const ReactCurrentDispatcher:any = {
-    /**
-     * @internal
-     * @type {ReactComponent}
-     */
-    current: null,
-  };
-  
-  export default ReactCurrentDispatcher;
+import * as hooks from './ReactHooks';
+
+interface IReactCurrentDispatcher{
+  useContext:typeof hooks.useContext
+  useState:typeof hooks.useState
+  useReducer:typeof hooks.useReducer
+  useRef:typeof hooks.useRef
+  useEffect:typeof hooks.useEffect
+  useLayoutEffect:typeof hooks.useLayoutEffect
+  useCallback:typeof hooks.useCallback
+  useMemo:typeof hooks.useMemo
+  useImperativeHandle:typeof hooks.useImperativeHandle
+}
+const ReactCurrentDispatcher: {
+  current: null | IReactCurrentDispatcher
+} = {
+  /**
+   * @internal
+   * @type {ReactComponent}
+   */
+  current: null,
+}
+
+export default ReactCurrentDispatcher
