@@ -50,9 +50,9 @@ export function useReducer<R extends React.Reducer<any, any>, I>(
   return dispatcher.useReducer(reducer, initializerArg, initializer)
 }
 export function useRef<T>(initialValue: T | null): React.RefObject<T>
-export function useRef<T extends unknown>(
+export function useRef<T>(
   initialValue: T
-): React.MutableRefObject<T> {
+): React.MutableRefObject<T> | NonNullable<React.RefObject<T>> {
   const dispatcher = resolveDispatcher()
   return dispatcher.useRef(initialValue)
 }

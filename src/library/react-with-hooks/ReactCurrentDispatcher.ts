@@ -11,7 +11,7 @@
  */
 import * as hooks from './ReactHooks';
 
-interface IReactCurrentDispatcher{
+export interface IReactCurrentDispatcher{
   useContext:typeof hooks.useContext
   useState:typeof hooks.useState
   useReducer:typeof hooks.useReducer
