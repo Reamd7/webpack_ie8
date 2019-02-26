@@ -7,7 +7,10 @@ import InlineChunkHtmlPlugin from "react-dev-utils/InlineChunkHtmlPlugin";
 const config: webpack.Configuration = {
   mode: "development",
   devtool: "cheap-module-source-map",
-  entry: ProjectPath.appIndexJs,
+  entry: [
+    ProjectPath.appIndexJs,
+    ProjectPath.appPolyfill
+  ],
   output: {
     path: ProjectPath.appBuild,
     filename: "index.[hash].js",

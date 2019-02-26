@@ -1843,6 +1843,11 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   resolved "http://registry.npm.taobao.org/console-control-strings/download/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
+console-polyfill@^0.3.0:
+  version "0.3.0"
+  resolved "http://registry.npm.taobao.org/console-polyfill/download/console-polyfill-0.3.0.tgz#84900902a18c47a5eba932be75fa44d23e8af861"
+  integrity sha1-hJAJAqGMR6XrqTK+dfpE0j6K+GE=
+
 constants-browserify@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/constants-browserify/download/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
@@ -2306,6 +2311,11 @@ es3ify@^0.2.2:
     jstransform "~11.0.0"
     through "~2.3.4"
 
+es5-shim@^4.5.12:
+  version "4.5.12"
+  resolved "http://registry.npm.taobao.org/es5-shim/download/es5-shim-4.5.12.tgz#508c13dda1c87dd3df1b50e69e7b96b82149b649"
+  integrity sha1-UIwT3aHIfdPfG1DmnnuWuCFJtkk=
+
 escape-string-regexp@1.0.5, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "http://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
@@ -2480,6 +2490,11 @@ faye-websocket@~0.11.1:
   integrity sha1-8O/hjE9W5PQK/H4Gxxn9XuYYjzg=
   dependencies:
     websocket-driver ">=0.5.1"
+
+fetch-polyfill2@^0.0.3:
+  version "0.0.3"
+  resolved "http://registry.npm.taobao.org/fetch-polyfill2/download/fetch-polyfill2-0.0.3.tgz#7b84489414fb7a048882c3920ea4d9a0aeeab955"
+  integrity sha1-e4RIlBT7egSIgsOSDqTZoK7quVU=
 
 figgy-pudding@^3.5.1:
   version "3.5.1"
@@ -3758,6 +3773,16 @@ object-copy@^0.1.0:
     copy-descriptor "^0.1.0"
     define-property "^0.2.5"
     kind-of "^3.0.3"
+
+object-create-ie8@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/object-create-ie8/download/object-create-ie8-1.0.0.tgz#5b4cb19707bf316407a9139acaa4a0f582665e92"
+  integrity sha1-W0yxlwe/MWQHqROayqSg9YJmXpI=
+
+object-defineproperty-ie8@^1.0.1:
+  version "1.0.1"
+  resolved "http://registry.npm.taobao.org/object-defineproperty-ie8/download/object-defineproperty-ie8-1.0.1.tgz#06daa37926b40d77fa22b0deb533727a08f5734c"
+  integrity sha1-BtqjeSa0DXf6IrDetTNyegj1c0w=
 
 object-keys@^1.0.11, object-keys@^1.0.12:
   version "1.1.0"
