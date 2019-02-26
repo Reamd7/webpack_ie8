@@ -1,7 +1,14 @@
 ## Note polyfill 策略: 
 
-IE8 单独使用代码打包polyfill . 参考 anu-ie8-example , 我也不知道为什么下者不行.. 
-IE9+ 就可以使用最轻量的动态polyfill . (基于 polyfill-service )
+~~IE8 单独使用代码打包polyfill . 参考 anu-ie8-example , 我也不知道为什么下者不行..~~ 
+
+~~IE9+ 就可以使用最轻量的动态polyfill . (基于 polyfill-service )~~
+
+polyfill service 所支持的polyfill library 的代码貌似有很多的bug , 然后不知道为什么用不了, 所以我希望架构改编为 :
+
+全部使用 core-js 的 polyfill ( 有些需要用 anu-ie8-example demo中使用的代码 ) , 然后使用代码动态计算出不同浏览器平台所需要的polyfill , 然后进行动态打包 
+
+前端加载 polyfill 可以使用动态加载 + 前端缓存处理 , 也可以使用 polyfill service 进行加载 . 
 
 ## 基于 anu-ie8-example demo进行改造，结合最新CRA的config进行改造
 - [x] typescript 的 webpack config 处理
