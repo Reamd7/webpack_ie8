@@ -7,3 +7,5 @@ import 'json3';  //比IE8的JSON好用
 
 import 'bluebird'; //性能超高的Promise实现
 import 'fetch-polyfill2'; //fetch 实现，我的另一力作
+
+import 'core-js/fn/object/is';

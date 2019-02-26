@@ -7,13 +7,13 @@ import InlineChunkHtmlPlugin from "react-dev-utils/InlineChunkHtmlPlugin";
 const config: webpack.Configuration = {
   mode: "development",
   devtool: "cheap-module-source-map",
-  entry: [
-    ProjectPath.appIndexJs,
-    ProjectPath.appPolyfill
-  ],
+  entry: {
+    "polyfill":ProjectPath.appPolyfill,
+    "index":ProjectPath.appIndexJs
+  },
   output: {
     path: ProjectPath.appBuild,
-    filename: "index.[hash].js",
+    filename: "[name].js",
     publicPath: "/",
     chunkFilename: "js/[name].[hash].js"
   },
@@ -94,7 +94,7 @@ const config: webpack.Configuration = {
       {
         test: /\.css$/,
         include: [ProjectPath.appSrc],
-        use: ["style-loader", "css-loadeer"]
+        use: ["style-loader", "css-loader"]
       },
       {
         test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
