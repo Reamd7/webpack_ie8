@@ -20,22 +20,26 @@ import is from './objectIs'
 import scheduleCallback from './scheduleCallback'
 
 const RE_RENDER_LIMIT = 25
+interface QUEUE{
+  // last: IHook<any> | null
+  last:any
+  dispatch: null | typeof dispatchAction
+  eagerReducer: typeof basicStateReducer
+  eagerState: any
+}
 interface IHook<State = any> {
   memoizedState: State | null
   baseState: State | null
-  queue: null | {
-    last: null
-    dispatch: null | typeof dispatchAction
-    eagerReducer: typeof basicStateReducer
-    eagerState: State
-  }
-  baseUpdate: null
-  next: null | IHook
+  queue: QUEUE | null
+  // baseUpdate: null | IHook<any>
+  baseUpdate:any
+  next:any
+  // next: null | IHook
 }
 interface IEffect {
   tag: number,
   create: React.EffectCallback,
-  destroy: any,
+  destroy?:()=>void,
   deps: React.DependencyList | null,
   next: null | IEffect,
 }
@@ -46,8 +50,12 @@ let nextCurrentHook: null | IHook = null
 let workInProgressHook: null | IHook = null
 let nextWorkInProgressHook: null | IHook = null
 let didScheduleRenderPhaseUpdate = false
-let currentInstance: null = null
-let renderPhaseUpdates: null = null
+let currentInstance: any = null
+type Updates = {
+  action:any,
+  next:Updates | null
+}
+let renderPhaseUpdates: null | Map<Exclude<IHook<any>["queue"], null>,Updates> = null
 let numberOfReRenders = 0
 let componentUpdateQueue: null | {
   lastEffect: null | IEffect,
@@ -60,7 +68,10 @@ interface IContext<T>{
 let componentContext: null | IContext<any> = null
 let isRenderPhase = false
 let didReceiveUpdate = false
-let passiveHookEffects = []
+let passiveHookEffects:{
+  callback:()=>void,
+  cancel:()=>void,
+}[] = []
 
 function markWorkInProgressReceivedUpdate() {
   didReceiveUpdate = true
@@ -70,7 +81,7 @@ function basicStateReducer(state: any, action: any) {
   return typeof action === 'function' ? action(state) : action
 }
 
-function prepareToUseHooks(current) {
+function prepareToUseHooks(current:any) {
   currentInstance = current
   firstCurrentHook = nextCurrentHook =
     current !== null ? current.memoizedState : null
@@ -112,7 +123,7 @@ function mountWorkInProgressHook() {
   return workInProgressHook
 }
 
-function updateWorkInProgressHook() {
+function updateWorkInProgressHook():IHook<any> {
   // This function is used both for updates and for re-renders triggered by a
   // render phase update. It assumes there is either a current hook we can
   // clone, or a work-in-progress hook from a previous render pass that we can
@@ -133,7 +144,7 @@ function updateWorkInProgressHook() {
     // invariant(nextCurrentHook !== null, 'Rendered more hooks than during the previous render.');
     currentHook = nextCurrentHook
 
-    const newHook:IHook = {
+    const newHook:IHook<any> = {
       memoizedState: currentHook.memoizedState,
 
       baseState: currentHook.baseState,
@@ -414,7 +425,7 @@ function updateImperativeHandle<T, R extends T>(
 }
 
 function mountContext<T>(
-  Context: React.Context<T>
+  Context: any
   /*, (not public API) observedBits?: number|boolean */
 ): T {
   pushContext(Context)
@@ -464,14 +475,14 @@ function updateReducer<R extends React.Reducer<any, any>, I>(
   if (numberOfReRenders > 0) {
     // This is a re-render. Apply the new render phase updates to the previous
     // work-in-progress hook.
-    const dispatch = queue.dispatch
+    const dispatch:any = queue.dispatch
     if (renderPhaseUpdates !== null) {
       // Render phase updates are stored in a map of queue -> linked list
       const firstRenderPhaseUpdate = renderPhaseUpdates.get(queue)
       if (firstRenderPhaseUpdate !== undefined) {
         renderPhaseUpdates.delete(queue)
         let newState = hook.memoizedState
-        let update = firstRenderPhaseUpdate
+        let update:null | Updates = firstRenderPhaseUpdate
         do {
           // Process this render phase update. We don't have to check the
           // priority because it will always be the same as the current
@@ -563,7 +574,7 @@ function updateReducer<R extends React.Reducer<any, any>, I>(
     queue.eagerState = newState
   }
 
-  const dispatch = queue.dispatch
+  const dispatch:any = queue.dispatch
   return [hook.memoizedState, dispatch]
 }
 
@@ -630,7 +641,7 @@ function flushPassiveEffects() {
   passiveHookEffects = []
 }
 
-function dispatchAction(instance, queue, action) {
+function dispatchAction(instance:typeof currentInstance, queue:Exclude<IHook<any>["queue"],null>, action?:any) {
   if (numberOfReRenders >= RE_RENDER_LIMIT) {
     throw 'Too many re-renders. React limits the number of renders to prevent ' +
       'an infinite loop.'
@@ -644,7 +655,7 @@ function dispatchAction(instance, queue, action) {
     // queue -> linked list of updates. After this render pass, we'll restart
     // and apply the stashed updates on top of the work-in-progress hook.
     didScheduleRenderPhaseUpdate = true
-    const update = {
+    const update:Updates = {
       action,
       next: null,
     }
@@ -665,7 +676,7 @@ function dispatchAction(instance, queue, action) {
   } else {
     flushPassiveEffects()
 
-    const update = {
+    const update:Updates = {
       action,
       next: null,
     }
@@ -745,7 +756,10 @@ export default function withHooks<T>(render:React.SFC<T>):React.SFC<T> {
     static displayName = render.displayName || render.name
 
     public memoizedState: IHook<any> | null = null 
-    public passiveHookEffect = null
+    public passiveHookEffect:null | {
+      callback:()=>void,
+      cancel:()=>void,
+    } = null
     public mounted = false;
     public updateQueue: null | {
       lastEffect: null | IEffect,
@@ -851,7 +865,7 @@ export default function withHooks<T>(render:React.SFC<T>):React.SFC<T> {
       }
     }
 
-    applyContext(render, context?, children?) {
+    applyContext(render?:any, context?:any, children?:any) {
       if (!children) {
         children = render()
       }
@@ -882,7 +896,7 @@ export default function withHooks<T>(render:React.SFC<T>):React.SFC<T> {
 
       isRenderPhase = true
 
-      let children = this.applyContext(() => render(rest, _forwardedRef))
+      let children = this.applyContext(() => render(rest as any, _forwardedRef))
 
       if (didScheduleRenderPhaseUpdate) {
         do {
