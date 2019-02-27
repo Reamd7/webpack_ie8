@@ -1,5 +1,5 @@
-- [ ] raf
-- [ ] rc-animate
+- [ ] raf polyfill
+- [x] rc-animate
 - [ ] rc-calendar
 - [ ] rc-cascader
 - [ ] rc-checkbox
