@@ -48,9 +48,9 @@ export interface AnimateChildProp {
       stop(): void
     }
   }
-  transitionEnter?: string
-  transitionAppear?: string
-  transitionLeave?: string
+  transitionEnter?: boolean
+  transitionAppear?: boolean
+  transitionLeave?: boolean
 }
 
 export function AnimateStop(context: AnimateChild) {

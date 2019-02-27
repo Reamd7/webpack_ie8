@@ -12,25 +12,25 @@ import AnimateChild, {AnimateChildProp} from './AnimateChild'
 import animUtil from './util/animate'
 
 const defaultKey = `rc_animate_${Date.now()}`
-type AnimateChildNode = React.ReactElement<any> | React.ReactPortal 
-interface AnimateProps extends React.Props<Animate>{
-  component:any
-  componentProps:any
+type AnimateChildNode = React.ReactElement<any> | React.ReactPortal
+interface AnimateProps extends React.Props<typeof Animate>{
+  component?:any
+  componentProps?:any
   className?:any
   style?:any
 
-  children: AnimateChildNode
-  showProp?: string ,
+  children: AnimateChildNode  | undefined | null
+  showProp?: string,
   exclusive?: boolean,
   onAppear:(key:React.Key)=>void;
   onEnter:(key:React.Key)=>void;
   onLeave:(key:React.Key)=>void;
   onEnd:(key:React.Key, status:boolean)=>void;
   animation: AnimateChildProp["animation"]
-  transitionName: AnimateChildProp["transitionName"]
-  transitionEnter: AnimateChildProp["transitionEnter"]
-  transitionAppear: AnimateChildProp["transitionAppear"]
-  transitionLeave: AnimateChildProp["transitionLeave"]
+  transitionName?: AnimateChildProp["transitionName"]
+  transitionEnter?: AnimateChildProp["transitionEnter"]
+  transitionAppear?: AnimateChildProp["transitionAppear"]
+  transitionLeave?: AnimateChildProp["transitionLeave"]
 }
 interface AnimateState{
   children:AnimateChildNode[]
@@ -49,8 +49,7 @@ function getChildrenFromProps(props:AnimateProps) {
   return children
 }
 
-
-export default class Animate extends React.Component<AnimateProps, AnimateState>{
+class Animate extends React.Component<AnimateProps, AnimateState>{
   static isAnimate = true; // eslint-disable-line
   static defaultProps = {
     animation: {},
@@ -75,12 +74,14 @@ export default class Animate extends React.Component<AnimateProps, AnimateState>
   } = {};
   
   public nextProps:AnimateProps | null = null;
-
+  
+  public props:AnimateProps
+  public state:AnimateState;
   constructor(props:AnimateProps){
     super(props);
-
+    this.props = props
     this.state = {
-      children: toArrayChildren(getChildrenFromProps(props)),
+      children: toArrayChildren(getChildrenFromProps(props)) as AnimateChildNode[], // 其实一开 内部是有可能为 null 的 但是由于最后render的时候直接输出了, 所以不会进其他方法中, 所以 这里不如进行断言 , 下文同理
     };
   }
 
@@ -113,7 +114,7 @@ export default class Animate extends React.Component<AnimateProps, AnimateState>
     if (props.exclusive && props !== this.nextProps) {
       return ()=>{};
     }
-    const currentChildren = toArrayChildren(getChildrenFromProps(props));
+    const currentChildren = toArrayChildren(getChildrenFromProps(props)) as AnimateChildNode[];
     if (!this.isValidChildByKey(currentChildren, key)) {
       // exclusive will not need this
       this.performLeave(key);
@@ -162,7 +163,7 @@ export default class Animate extends React.Component<AnimateProps, AnimateState>
     if (props.exclusive && props !== this.nextProps) {
       return;
     }
-    const currentChildren = toArrayChildren(getChildrenFromProps(props));
+    const currentChildren = toArrayChildren(getChildrenFromProps(props)) as AnimateChildNode[];
     // in case state change is too fast
     if (this.isValidChildByKey(currentChildren, key)) {
       this.performEnter(key);
@@ -194,7 +195,7 @@ export default class Animate extends React.Component<AnimateProps, AnimateState>
   // todo Change New LifeCycle 
   componentWillReceiveProps(nextProps:AnimateProps) {
     this.nextProps = nextProps;
-    const nextChildren = toArrayChildren(getChildrenFromProps(nextProps));
+    const nextChildren = toArrayChildren(getChildrenFromProps(nextProps)) as AnimateChildNode[];
     const props = this.props;
     // exclusive needs immediate response
     if (props.exclusive) {
@@ -206,7 +207,7 @@ export default class Animate extends React.Component<AnimateProps, AnimateState>
     const currentlyAnimatingKeys = this.currentlyAnimatingKeys;
     // last props children if exclusive
     const currentChildren = props.exclusive ?
-      toArrayChildren(getChildrenFromProps(props)) :
+      toArrayChildren(getChildrenFromProps(props)) as AnimateChildNode[]:
       this.state.children;
     // in case destroy in showProp mode
     let newChildren:AnimateState["children"] = [];
@@ -338,3 +339,5 @@ export default class Animate extends React.Component<AnimateProps, AnimateState>
     keysToLeave.forEach(this.performLeave);
   }
 }
+
+export default  Animate
