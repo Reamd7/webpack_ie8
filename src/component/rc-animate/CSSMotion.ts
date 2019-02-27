@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { polyfill } from 'react-lifecycles-compat';
+// import { polyfill } from 'react-lifecycles-compat';
 import classNames from 'classnames';
 import raf from 'raf';
 import {
@@ -249,7 +249,7 @@ export function genCSSMotion(transitionSupport) {
     }
   }
 
-  polyfill(CSSMotion);
+  // polyfill(CSSMotion);
 
   return CSSMotion;
 }

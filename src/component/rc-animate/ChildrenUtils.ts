@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function toArrayChildren<C = React.ReactElement<any>>(children:C | C[]) {
+export function toArrayChildren<C>(children:C | C[]) {
   const ret:C[] = [];
   React.Children.forEach(children, (child) => {
     ret.push(child);
@@ -8,7 +8,7 @@ export function toArrayChildren<C = React.ReactElement<any>>(children:C | C[]) {
   return ret;
 }
 
-export function findChildInChildrenByKey(children: React.ReactElement<any>[], key:React.Key) {
+export function findChildInChildrenByKey(children: React.ReactElement<any>[], key:React.Key): null | React.ReactElement<any> {
   let ret:null | React.ReactElement<any> = null;
   if (children) {
     children.forEach((child) => {
@@ -51,7 +51,7 @@ export function findHiddenChildInChildrenByKey(children: React.ReactElement<any>
   return found;
 }
 
-export function isSameChildren(c1: React.ReactElement<any>[], c2: React.ReactElement<any>[], showProp:string) {
+export function isSameChildren(c1: React.ReactElement<any>[], c2: React.ReactElement<any>[], showProp?:string) {
   let same = c1.length === c2.length;
   if (same) {
     c1.forEach((child, index) => {

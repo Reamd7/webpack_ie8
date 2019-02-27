@@ -77,13 +77,39 @@ function useRefHandle(initial:any):[React.MutableRefObject<any>, ()=>any]{
   let focusHandle = ()=>ref.current.focus();
   return [ref, focusHandle]
 }
-
+const COUNT = (props:{
+  count:number,
+  children:any
+}) => {
+  const [mouted, setMouted] = useState(false);
+  const [number, setNumber] = useState(0);
+  const ref = useRef(null)
+  useEffect(()=>{
+    if (mouted === false){
+      setMouted(true);
+    }else{
+      console.log(ref)
+    }
+  })
+  if (mouted === false){
+    return null
+  }else{
+    return <p>
+    count:{props.count + number}
+    {React.cloneElement(
+      props.children,{
+        ref:ref
+      })}
+    </p>
+  }
+}
 const App = (props:any)=> {
     const innerWidth = useWindowWith()
     const [count, setCount] = useCount(0);
     const {color,background} = useContext(ThemeContext);
     const [state, dispatch] = useReducer(reducer, initialState)
     let [inputEl, focusHandle] = useRefHandle(null);
+
     console.log('render number')
     return (
       <div className="App">
@@ -93,7 +119,9 @@ const App = (props:any)=> {
           <p>  react hook demo </p>
 
           {/* useState demo */}
-          <p>count:{count}</p>
+          <COUNT count={count}>
+            <span>addClass</span>
+          </COUNT>
           <button onClick={()=>setCount(count+1)} className="App-button"  >点击</button>
 
           {/* useReducer demo */}
