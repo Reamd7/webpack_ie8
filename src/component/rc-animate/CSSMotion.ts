@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 // import { polyfill } from 'react-lifecycles-compat';
-import classNames from 'classnames';
-import raf from 'raf';
+// import classNames from 'classnames';
 import {
   getTransitionName,
   animationEndName, transitionEndName,
@@ -14,37 +13,47 @@ const STATUS_NONE = 'none';
 const STATUS_APPEAR = 'appear';
 const STATUS_ENTER = 'enter';
 const STATUS_LEAVE = 'leave';
+type EventFunc = (node:Element | null | Text, event?:Event | null) => object | false
+interface CSSMotionProps{
+  visible: boolean,
+  children: (props:any)=>any,
+  motionName: string | {
+    [key:string]:string
+  },
+  motionAppear: boolean,
+  motionEnter: boolean,
+  motionLeave: boolean,
+  motionLeaveImmediately: boolean, // Trigger leave motion immediately
+  removeOnLeave: boolean,
+  leavedClassName: string,
+  onAppearStart: EventFunc,
+  onAppearActive: EventFunc,
+  onAppearEnd: EventFunc,
+  onEnterStart: EventFunc,
+  onEnterActive: EventFunc,
+  onEnterEnd: EventFunc,
+  onLeaveStart: EventFunc,
+  onLeaveActive: EventFunc,
+  onLeaveEnd: EventFunc,
+}
+interface CSSMotionState{
+  status:'none' | 'appear' | 'enter' | 'leave'
+  statusActive: boolean,
+  newStatus: boolean,
+  statusStyle: null | ReturnType<EventFunc>,
+  prevProps?:CSSMotionProps
+}
 
 /**
  * `transitionSupport` is used for none transition test case.
  * Default we use browser transition event support check.
  */
-export function genCSSMotion(transitionSupport) {
-  function isSupportTransition(props) {
+export function genCSSMotion(transitionSupport:boolean) {
+  function isSupportTransition(props:CSSMotionProps) {
     return !!(props.motionName && transitionSupport);
   }
 
-  class CSSMotion extends React.Component {
-    static propTypes = {
-      visible: PropTypes.bool,
-      children: PropTypes.func,
-      motionName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-      motionAppear: PropTypes.bool,
-      motionEnter: PropTypes.bool,
-      motionLeave: PropTypes.bool,
-      motionLeaveImmediately: PropTypes.bool, // Trigger leave motion immediately
-      removeOnLeave: PropTypes.bool,
-      leavedClassName: PropTypes.string,
-      onAppearStart: PropTypes.func,
-      onAppearActive: PropTypes.func,
-      onAppearEnd: PropTypes.func,
-      onEnterStart: PropTypes.func,
-      onEnterActive: PropTypes.func,
-      onEnterEnd: PropTypes.func,
-      onLeaveStart: PropTypes.func,
-      onLeaveActive: PropTypes.func,
-      onLeaveEnd: PropTypes.func,
-    };
+  class CSSMotion extends React.Component<CSSMotionProps,CSSMotionState> {
 
     static defaultProps = {
       visible: true,
@@ -53,9 +62,12 @@ export function genCSSMotion(transitionSupport) {
       motionLeave: true,
       removeOnLeave: true,
     };
+    public raf:null | ReturnType<typeof requestAnimationFrame> = null;
+    public $ele:Element | null = null;
+    public _destroyed = false;
 
-    constructor() {
-      super();
+    constructor(props:CSSMotionProps) {
+      super(props);
 
       this.state = {
         status: STATUS_NONE,
@@ -63,11 +75,9 @@ export function genCSSMotion(transitionSupport) {
         newStatus: false,
         statusStyle: null,
       };
-      this.$ele = null;
-      this.raf = null;
     }
 
-    static getDerivedStateFromProps(props, { prevProps }) {
+    static getDerivedStateFromProps(props:CSSMotionProps, { prevProps }:CSSMotionState) {
       if (!isSupportTransition(props)) return {};
 
       const {
@@ -76,7 +86,7 @@ export function genCSSMotion(transitionSupport) {
       } = props;
       const newState = {
         prevProps: props,
-      };
+      } as CSSMotionState;
 
       // Appear
       if (!prevProps && visible && motionAppear) {
@@ -132,7 +142,7 @@ export function genCSSMotion(transitionSupport) {
       }
 
       // Event injection
-      const $ele = ReactDOM.findDOMNode(this);
+      const $ele = ReactDOM.findDOMNode(this) as Element;
       if (this.$ele !== $ele) {
         this.removeEventListener(this.$ele);
         this.addEventListener($ele);
@@ -155,7 +165,7 @@ export function genCSSMotion(transitionSupport) {
       }
     };
 
-    onMotionEnd = (event) => {
+    onMotionEnd = (event:Event) => {
       const { status, statusActive } = this.state;
       const { onAppearEnd, onEnterEnd, onLeaveEnd } = this.props;
       if (status === STATUS_APPEAR && statusActive) {
@@ -167,20 +177,23 @@ export function genCSSMotion(transitionSupport) {
       }
     };
 
-    addEventListener = ($ele) => {
+    addEventListener = ($ele:Element | null) => {
       if (!$ele) return;
 
       $ele.addEventListener(transitionEndName, this.onMotionEnd);
       $ele.addEventListener(animationEndName, this.onMotionEnd);
     };
-    removeEventListener = ($ele) => {
+    removeEventListener = ($ele:Element | null) => {
       if (!$ele) return;
 
       $ele.removeEventListener(transitionEndName, this.onMotionEnd);
       $ele.removeEventListener(animationEndName, this.onMotionEnd);
     };
 
-    updateStatus = (styleFunc, additionalState, event, callback) => {
+    updateStatus = (styleFunc:EventFunc, additionalState:null | {
+      status?:CSSMotionState["status"]
+      statusActive?:boolean
+    }, event?:Event | null, callback?:FrameRequestCallback) => {
       const statusStyle = styleFunc ? styleFunc(ReactDOM.findDOMNode(this), event) : null;
 
       if (statusStyle === false || this._destroyed) return;
@@ -191,15 +204,15 @@ export function genCSSMotion(transitionSupport) {
           this.nextFrame(callback);
         };
       }
-
+      
       this.setState({
         statusStyle: typeof statusStyle === 'object' ? statusStyle : null,
         newStatus: false,
-        ...additionalState,
+        ...additionalState as any, // !! 这里应不应该有非空断言
       }, nextStep); // Trigger before next frame & after `componentDidMount`
     };
 
-    updateActiveStatus = (styleFunc, currentStatus) => {
+    updateActiveStatus = (styleFunc:EventFunc, currentStatus:CSSMotionState["status"]) => {
       // `setState` use `postMessage` to trigger at the end of frame.
       // Let's use requestAnimationFrame to update new state in next frame.
       this.nextFrame(() => {
@@ -210,14 +223,14 @@ export function genCSSMotion(transitionSupport) {
       });
     };
 
-    nextFrame = (func) => {
+    nextFrame = (func:FrameRequestCallback) => {
       this.cancelNextFrame();
-      this.raf = raf(func);
+      this.raf = requestAnimationFrame(func);
     };
 
     cancelNextFrame = () => {
       if (this.raf) {
-        raf.cancel(this.raf);
+        cancelAnimationFrame(this.raf);
         this.raf = null;
       }
     };
@@ -237,15 +250,29 @@ export function genCSSMotion(transitionSupport) {
 
         return null;
       }
-
       return children({
-        className: classNames({
-          [getTransitionName(motionName, status)]: status !== STATUS_NONE,
-          [getTransitionName(motionName, `${status}-active`)]: status !== STATUS_NONE && statusActive,
-          [motionName]: typeof motionName === 'string',
-        }),
+        className: (function(){
+          let classList:string[] = []
+          if (statusActive){
+            classList.push(getTransitionName(motionName, `${status}-active`)!)
+          }
+          if (typeof motionName === 'string'){
+            classList.push(motionName)
+          }
+          return classList.join(" ")
+        }()),
         style: statusStyle,
       });
+      // return children({
+      //   className: classNames({
+      //     // [getTransitionName(motionName, status)!]: status !== STATUS_NONE,
+      //     [getTransitionName(motionName, `${status}-active`)!]: 
+      //       // status !== STATUS_NONE && 
+      //       statusActive,
+      //     [motionName as string]: typeof motionName === 'string',
+      //   }),
+      //   style: statusStyle,
+      // });
     }
   }
 
