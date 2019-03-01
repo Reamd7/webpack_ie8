@@ -13,7 +13,7 @@ import animUtil from './util/animate'
 
 const defaultKey = `rc_animate_${Date.now()}`
 type AnimateChildNode = React.ReactElement<any> | React.ReactPortal
-interface AnimateProps extends React.Props<typeof Animate>{
+export interface AnimateProps extends React.Props<typeof Animate>{
   component?:any
   componentProps?:any
   className?:any

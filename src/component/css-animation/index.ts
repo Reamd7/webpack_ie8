@@ -59,11 +59,11 @@ function clearBrowserBugTimeout(node: AniNode) {
     node.rcEndAnimTimeout = null
   }
 }
-type CallBackEnd = () => void
+type CallBackEnd = () => unknown
 type CallBackObj = {
-  end: CallBackEnd
-  start: () => void
-  active: () => void
+  end: () => unknown
+  start: () => unknown
+  active: () => unknown
 }
 const cssAnimation = (
   node: AniNode,
@@ -81,8 +81,8 @@ const cssAnimation = (
       : [transitionName.name, transitionName.active]
 
   let end = endCallback
-  let start: undefined | (() => void) = undefined;
-  let active: undefined | (() => void) = undefined;
+  let start: undefined | (() => unknown) = undefined;
+  let active: undefined | (() => unknown) = undefined;
   const nodeClasses = node.classList
 
   if ( typeof endCallback !== "function" ) {

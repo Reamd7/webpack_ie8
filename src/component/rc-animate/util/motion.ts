@@ -32,7 +32,7 @@ export function getVendorPrefixes(domSupport:boolean, win:any) {
     }
   }
 
-  return prefixes;
+  return prefixes as Partial<typeof prefixes>;
 }
 
 const vendorPrefixes = getVendorPrefixes(canUseDOM, typeof window !== 'undefined' ? window : {});
