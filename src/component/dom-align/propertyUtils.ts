@@ -1,4 +1,5 @@
-let vendorPrefix:string | undefined;
+// 2cc0a91  on 16 Aug 2016
+let vendorPrefix:string;
 
 const jsCssMap = {
   Webkit: '-webkit-',
@@ -23,15 +24,15 @@ function getVendorPrefix() {
   return vendorPrefix;
 }
 
-function getTransitionName():any {
-  return getVendorPrefix() ? `${getVendorPrefix()}TransitionProperty` : 'transitionProperty';
+function getTransitionName():"transitionProperty" {
+  return (getVendorPrefix() ? `${getVendorPrefix()}TransitionProperty` : 'transitionProperty') as "transitionProperty";
 }
 
-export function getTransformName():any {
-  return getVendorPrefix() ? `${getVendorPrefix()}Transform` : 'transform';
+export function getTransformName() {
+  return (getVendorPrefix() ? `${getVendorPrefix()}Transform` : 'transform') as "transform"
 }
 
-export function setTransitionProperty(node:HTMLElement | SVGElement, value:string) {
+export function setTransitionProperty(node:HTMLElement, value:string) {
   const name = getTransitionName();
   if (name) {
     node.style[name] = value;
@@ -41,7 +42,7 @@ export function setTransitionProperty(node:HTMLElement | SVGElement, value:strin
   }
 }
 
-function setTransform(node:HTMLElement | SVGElement, value:string) {
+function setTransform(node:HTMLElement, value:string) {
   const name = getTransformName();
   if (name) {
     node.style[name] = value;
@@ -51,17 +52,24 @@ function setTransform(node:HTMLElement | SVGElement, value:string) {
   }
 }
 
-export function getTransitionProperty(node:HTMLElement | SVGElement) {
+export function getTransitionProperty(node:HTMLElement) {
   return node.style.transitionProperty || node.style[getTransitionName()];
 }
 
-export function getTransformXY(node:HTMLElement | SVGElement) {
+export function getTransformXY(node:HTMLElement) {
   const style = window.getComputedStyle(node, null);
   const transform = style.getPropertyValue('transform') ||
     style.getPropertyValue(getTransformName());
   if (transform && transform !== 'none') {
     const matrix = transform.replace(/[^0-9\-.,]/g, '').split(',');
-    return { x: parseFloat(matrix[12] || matrix[4]), y: parseFloat(matrix[13] || matrix[5]) };
+    // return { 
+    //     x: parseFloat(matrix[12] || matrix[4], 0), 
+    //     y: parseFloat(matrix[13] || matrix[5], 0) 
+    // };
+    return { 
+        x: parseFloat(matrix[12] || matrix[4]), 
+        y: parseFloat(matrix[13] || matrix[5]) 
+    };
   }
   return {
     x: 0,
@@ -72,8 +80,8 @@ export function getTransformXY(node:HTMLElement | SVGElement) {
 const matrix2d = /matrix\((.*)\)/;
 const matrix3d = /matrix3d\((.*)\)/;
 
-export function setTransformXY(node:HTMLElement | SVGElement, xy:{
-  x:number;y:number
+export function setTransformXY(node:HTMLElement, xy:{
+  x:number,y:number
 }) {
   const style = window.getComputedStyle(node, null);
   const transform = style.getPropertyValue('transform') ||
@@ -81,7 +89,8 @@ export function setTransformXY(node:HTMLElement | SVGElement, xy:{
   if (transform && transform !== 'none') {
     let arr;
     let match2d = transform.match(matrix2d);
-    if (match2d !== null) {
+    if (match2d) {
+      // match2d = match2d[1];
       arr = match2d[1].split(',').map((item) => {
         // return parseFloat(item, 10);
         return parseFloat(item);
@@ -91,7 +100,7 @@ export function setTransformXY(node:HTMLElement | SVGElement, xy:{
       setTransform(node, `matrix(${arr.join(',')})`);
     } else {
       const match3d = transform.match(matrix3d);
-      if (match3d){
+      if (match3d !== null){
         arr = match3d[1].split(',').map((item) => {
           // return parseFloat(item, 10);
           return parseFloat(item);
