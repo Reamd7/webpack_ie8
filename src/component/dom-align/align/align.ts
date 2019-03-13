@@ -81,9 +81,8 @@ function convertOffset(str: string, offsetLen: number) {
   }
   return n || 0
 }
-type PropsOffest = [string | number, string | number] // 将 offset 转换成数值，支持百分比
 function normalizeOffset(
-  offset: PropsOffest,
+  offset: R.PropsOffest,
   el: {
     width: number
     height: number
@@ -100,8 +99,8 @@ export default function domAlign(
   tgtRegion: R.Region,
   align: {
     points: [R.point, R.point]
-    offset?: PropsOffest
-    targetOffset?: PropsOffest
+    offset?: R.PropsOffest
+    targetOffset?: R.PropsOffest
     overflow?: {
       adjustX?: boolean
       adjustY?: boolean

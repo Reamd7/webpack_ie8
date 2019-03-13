@@ -16,12 +16,10 @@ function isOutOfVisibleRect(target: Document | Window | HTMLElement) {
       targetRegion.top >= visibleRect.bottom
     )
   }
-type PropsOffest = [string | number, string | number] // 将 offset 转换成数值，支持百分比
-
 function alignElement(el:HTMLElement, refNode:HTMLElement, align:{
     points: [R.point, R.point]
-    offset?: PropsOffest
-    targetOffset?: PropsOffest
+    offset?: R.PropsOffest
+    targetOffset?: R.PropsOffest
     overflow?: {
       adjustX?: boolean
       adjustY?: boolean

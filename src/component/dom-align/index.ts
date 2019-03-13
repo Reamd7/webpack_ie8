@@ -98,7 +98,7 @@ function convertOffset(str: string, offsetLen: number) {
 }
 
 function normalizeOffset(
-  offset: PropsOffest,
+  offset: R.PropsOffest,
   el: {
     width: number
     height: number
@@ -109,14 +109,13 @@ function normalizeOffset(
     convertOffset(String(offset[1]), el.height),
   ]
 }
-type PropsOffest = [string | number, string | number] // 将 offset 转换成数值，支持百分比
 function domAlign(
   el: HTMLElement,
   refNode: HTMLElement,
   align: {
     points: [R.point, R.point]
-    offset?: PropsOffest
-    targetOffset?: PropsOffest
+    offset?: R.PropsOffest
+    targetOffset?: R.PropsOffest
     overflow?: {
       adjustX?: boolean
       adjustY?: boolean

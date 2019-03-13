@@ -34,7 +34,7 @@ export function isDocument(obj: any): obj is Document {
   /* eslint eqeqeq:0 */
   return obj.nodeType === 9
 }
-export function getDocument(node: any): Document {
+export function getDocument(node: Window | Document | Element): Document {
   if (isWindow(node)) {
     return node.document
   }
