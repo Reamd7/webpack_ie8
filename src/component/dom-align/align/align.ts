@@ -95,9 +95,9 @@ function normalizeOffset(
   ]
 }
 
-function domAlign(
+export default function domAlign(
   el: HTMLElement,
-  refNode: HTMLElement,
+  tgtRegion: R.Region,
   align: {
     points: [R.point, R.point]
     offset?: PropsOffest
@@ -120,7 +120,7 @@ function domAlign(
     adjustX?: boolean
     adjustY?: boolean
   } = align.overflow || {}
-  const target = align.target || refNode
+  // const target = align.target || refNode // !!
   const source = align.source || el
 
   // overflow = overflow || {};
@@ -134,7 +134,7 @@ function domAlign(
   // 当前节点所占的区域, left/top/width/height
   const elRegion = getRegion(source)
   // 参照节点所占的区域, left/top/width/height
-  const refNodeRegion = getRegion(target)
+  // const refNodeRegion = getRegion(target) // !!
 
   // 将 offset 转换成数值，支持百分比
   // let offset = align.offset || [0, 0];
@@ -148,12 +148,14 @@ function domAlign(
   // targetOffset = [targetOffset[0], targetOffset[1]]
   let targetOffset = normalizeOffset(
     align.targetOffset || [0, 0],
-    refNodeRegion
+    // refNodeRegion // !!
+    tgtRegion
   )
   // 当前节点将要被放置的位置
   let elFuturePos = getElFuturePos(
     elRegion,
-    refNodeRegion,
+    // refNodeRegion, // !!
+    tgtRegion,
     points,
     offset,
     targetOffset
@@ -183,7 +185,8 @@ function domAlign(
         const newTargetOffset = flipOffset(targetOffset, 0)
         const newElFuturePos = getElFuturePos(
           elRegion,
-          refNodeRegion,
+          // refNodeRegion, // !!
+          tgtRegion,
           newPoints,
           newOffset,
           newTargetOffset
@@ -211,7 +214,8 @@ function domAlign(
         const newTargetOffset = flipOffset(targetOffset, 1)
         const newElFuturePos = getElFuturePos(
           elRegion,
-          refNodeRegion,
+          // refNodeRegion, // !!
+          tgtRegion,
           newPoints,
           newOffset,
           newTargetOffset
@@ -230,7 +234,8 @@ function domAlign(
     if (fail) {
       elFuturePos = getElFuturePos(
         elRegion,
-        refNodeRegion,
+        // refNodeRegion,// !!
+        tgtRegion,
         points,
         offset,
         targetOffset
