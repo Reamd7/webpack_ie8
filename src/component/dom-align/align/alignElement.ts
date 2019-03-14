@@ -16,21 +16,7 @@ function isOutOfVisibleRect(target: Document | Window | HTMLElement) {
       targetRegion.top >= visibleRect.bottom
     )
   }
-function alignElement(el:HTMLElement, refNode:HTMLElement, align:{
-    points: [R.point, R.point]
-    offset?: R.PropsOffest
-    targetOffset?: R.PropsOffest
-    overflow?: {
-      adjustX?: boolean
-      adjustY?: boolean
-    }
-    useCssRight?: boolean
-    useCssBottom?: boolean
-    useCssTransform?: boolean
-    ignoreShake?:boolean
-    target:HTMLElement,
-    source:HTMLElement,
-  }) {
+function alignElement(el:HTMLElement, refNode:Window | HTMLElement, align:R.alignConfig) {
   const target = align.target || refNode;
   const refNodeRegion = getRegion(target);
 

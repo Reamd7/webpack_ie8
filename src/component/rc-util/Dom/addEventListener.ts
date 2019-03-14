@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 
-export default function addEventListenerWrap(target:Element, eventType: string, cb:EventListener, option ?:boolean | AddEventListenerOptions ) {
+export default function addEventListenerWrap(target:Element | Window, eventType: string, cb:EventListener, option ?:boolean | AddEventListenerOptions ) {
   const callback = ReactDOM.unstable_batchedUpdates ? function run(e:Event) {
     ReactDOM.unstable_batchedUpdates(cb, e);
   } : cb;

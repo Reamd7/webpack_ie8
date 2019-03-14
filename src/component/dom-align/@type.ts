@@ -22,3 +22,19 @@ export type Dir = "top" | "bottom" | "right" | "left";
 export type StyleName = Exclude<keyof CSSStyleDeclaration, number | "parentRule" | "length">;
 
 export type PropsOffest = [string | number, string | number] // 将 offset 转换成数值，支持百分比
+
+export type alignConfig = {
+  points: [point, point] | string[]
+  offset?: PropsOffest
+  targetOffset?: PropsOffest
+  overflow?: {
+    adjustX?: boolean
+    adjustY?: boolean
+  }
+  useCssRight?: boolean
+  useCssBottom?: boolean
+  useCssTransform?: boolean
+  ignoreShake?:boolean
+  target?:HTMLElement,
+  source?:HTMLElement,
+}

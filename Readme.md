@@ -42,3 +42,7 @@ polyfill service 所支持的polyfill library 的代码貌似有很多的bug , �
   - [-] 6. react-with-hook ( 基本先做了一下 将无法进行类型编译的库都进行any操作 发现库本身还是有很多不合适的地方  所以还需要进行更新开发 )
   - [ ] 7. 模仿antd 的组件学习编写可用的组件
      - [ ] 首先整理 ie兼容的 polyfill 的处理 / 因为组件库是时候渐进兼容的方式进行处理的, 所以搞清楚所有兼容的代码都是有意义的.
+     IE8 的开发环境还是有问题要整理的:
+     - [ ] anujs 中对react hook 的支持是有问题的, 然而我希望用react hook重构代码, 所以应该要考虑 react 的 兼容性支持
+     - [ ] IE下的polyfill支持需要不断地进行整理
+     - [ ] polyfill 很重要

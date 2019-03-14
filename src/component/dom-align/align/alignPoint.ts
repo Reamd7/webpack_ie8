@@ -6,21 +6,7 @@ import * as R from "../@type";
  * If client position provided, will internal convert to page position.
  */
 
-function alignPoint(el:HTMLElement, tgtPoint:{ pageX:number, pageY:number } | { clientX:number, clientY:number }, align:{
-  points: [R.point, R.point]
-  offset?: R.PropsOffest
-  targetOffset?: R.PropsOffest
-  overflow?: {
-    adjustX?: boolean
-    adjustY?: boolean
-  }
-  useCssRight?: boolean
-  useCssBottom?: boolean
-  useCssTransform?: boolean
-  ignoreShake?:boolean
-  target:HTMLElement,
-  source:HTMLElement,
-}) {
+function alignPoint(el:HTMLElement, tgtPoint:{ pageX:number, pageY:number } | { clientX:number, clientY:number }, align:R.alignConfig) {
   let pageX;
   let pageY;
 
@@ -55,7 +41,7 @@ function alignPoint(el:HTMLElement, tgtPoint:{ pageX:number, pageY:number } | { 
     (pageY >= 0 && pageY <= scrollY + viewportHeight);
 
   // Provide default target point
-  const points:[R.point, R.point] = [align.points[0], 'cc'];
+  const points:[R.point, R.point] = [align.points[0] as R.point, 'cc'];
 
   return doAlign(el, tgtRegion, { ...align, points }, pointInView);
 }

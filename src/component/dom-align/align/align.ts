@@ -97,24 +97,10 @@ function normalizeOffset(
 export default function domAlign(
   el: HTMLElement,
   tgtRegion: R.Region,
-  align: {
-    points: [R.point, R.point]
-    offset?: R.PropsOffest
-    targetOffset?: R.PropsOffest
-    overflow?: {
-      adjustX?: boolean
-      adjustY?: boolean
-    }
-    useCssRight?: boolean
-    useCssBottom?: boolean
-    useCssTransform?: boolean
-    ignoreShake?:boolean
-    target:HTMLElement,
-    source:HTMLElement,
-  },
+  align: R.alignConfig,
   isTargetNotOutOfVisible:boolean
 ) {
-  let points: [R.point, R.point] = align.points
+  let points: [R.point, R.point] = align.points as [R.point, R.point]
   let overflow: {
     adjustX?: boolean
     adjustY?: boolean
@@ -246,7 +232,7 @@ export default function domAlign(
     // 检查反下后的位置是否可以放下了，如果仍然放不下：
     // 1. 复原修改过的定位参数
     if (isStillFailX || isStillFailY) {
-      points = align.points
+      points = align.points as [R.point, R.point]
       offset = align.offset || [0, 0] as any
       targetOffset = align.offset || [0, 0] as any
     }

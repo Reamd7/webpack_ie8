@@ -6,6 +6,7 @@
   "author": "reamd7",
   "license": "MIT",
   "dependencies": {
+    "@babel/preset-react": "^7.0.0",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
     "anujs": "^1.5.0",

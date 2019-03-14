@@ -20,8 +20,10 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: [".js", ".json", ".jsx" , ".ts" , ".tsx"],
     alias: {
-      react: "anujs/dist/ReactIE.js",
-      "react-dom": "anujs/dist/ReactIE.js",
+      // react: "anujs/dist/ReactIE.js",
+      // "react-dom": "anujs/dist/ReactIE.js",
+      react: "anujs",
+      "react-dom": "anujs",
       "prop-types": "anujs/lib/ReactPropTypes",
       devtools: "anujs/lib/devtools",
       "create-react-class": "anujs/lib/createClass"

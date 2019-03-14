@@ -1,160 +1,125 @@
+import Align from './component/rc-align';
+import React, { Component } from 'react';
+class Test extends Component {
+  state = {
+    monitor: true,
+    random: false,
+    randomWidth: 100,
+    align: {
+      points: ['cc', 'cc'],
+    },
+  };
+  public id : NodeJS.Timer | null = null;
+  public $container:HTMLElement | null = null;
 
-import logo from './logo.svg';
-import './App.css';
-import React ,{ 
-  useState,
-  useEffect,
-  useContext,
-  useReducer ,
-  useRef
-} from 'react'
-
-const ThemeContext = React.createContext({
-  background: '#282c34',
-  color: '#61dafb'
-});
-
-/**
- * 监控浏览器变化
- * @return {number} innerWidth 返回当前窗口宽度
- * **/
-const useWindowWith = ()=>{
-
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-
-  const handleResize = () => setInnerWidth(window.innerWidth)
-
-  useEffect(()=>{
-      window.addEventListener('resize',handleResize)
-      return ()=>{
-        window.removeEventListener('resize',handleResize)
+  componentDidMount() {
+    this.id = setInterval(() => {
+      const { random } = this.state;
+      if (random) {
+        this.setState({
+          randomWidth: 60 + 40 * Math.random(),
+        }, () => {
+          // this.forceAlign();
+        });
       }
-  })
-  return innerWidth
-}
-
-/**
- * 计数
- * @param  {number} initialState 初始值
- * @return {number} count 值
- * @return {function} setCount 改变值的方法
- * */
-const useCount= (initialState:number) => {
-  const State = useState(initialState);
-  useEffect(()=>{
-      console.log('change')
-  },[State[0]])
-  return State
-}
-
-/**
- * count-reducer
- * * */
-
-const initialState = {count: 0};
-
-function reducer(state:any, action:any) {
-  switch (action.type) {
-    case 'reset':
-      return initialState;
-    case 'increment':
-      return {count: state.count + 1};
-    case 'decrement':
-      return {count: state.count - 1};
-    default:
-      return state
+    }, 1000);
   }
-}
 
-/**
- * 点击获取焦点
- * @param  {number} initial 初始值
- * @return {object} ref 当前的ref对象
- * @return {function} focusHandle 使用该ref对象的函数
- * */
-function useRefHandle(initial:any):[React.MutableRefObject<any>, ()=>any]{
-  let ref = useRef(initial)
-  let focusHandle = ()=>ref.current.focus();
-  return [ref, focusHandle]
-}
-const COUNT = (props:{
-  count:number,
-  children:any
-}) => {
-  const [mouted, setMouted] = useState(false);
-  const [number, setNumber] = useState(0);
-  const ref = useRef(null)
-  useEffect(()=>{
-    if (mouted === false){
-      setMouted(true);
-    }else{
-      console.log(ref)
+  componentWillUnmount() {
+    clearInterval(this.id!);
+  }
+
+  getTarget = () => {
+    if (!this.$container) {
+      // parent ref not attached
+      this.$container = document.getElementById('root');
     }
-  })
-  if (mouted === false){
-    return null
-  }else{
-    return <p>
-    count:{props.count + number}
-    {React.cloneElement(
-      props.children,{
-        ref:ref
-      })}
-    </p>
+    return this.$container;
   }
-}
-const App = (props:any)=> {
-    const innerWidth = useWindowWith()
-    const [count, setCount] = useCount(0);
-    const {color,background} = useContext(ThemeContext);
-    const [state, dispatch] = useReducer(reducer, initialState)
-    let [inputEl, focusHandle] = useRefHandle(null);
 
-    console.log('render number')
+  containerRef = (ele:HTMLElement | null) => {
+    this.$container = ele;
+  }
+
+  // alignRef = (node) => {
+  //   this.$align = node;
+  // }
+
+  toggleMonitor = () => {
+    this.setState({
+      monitor: !this.state.monitor,
+    });
+  }
+
+  toggleRandom = () => {
+    this.setState({
+      random: !this.state.random,
+    });
+  }
+
+  // forceAlign = () => {
+  //   this.$align.forceAlign();
+  // }
+
+  render() {
+    const { random, randomWidth } = this.state;
+
     return (
-      <div className="App">
-        {/* useContext demo */}
-        <header className="App-header" style={{backgroundColor:background}}>
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>  react hook demo </p>
-
-          {/* useState demo */}
-          <COUNT count={count}>
-            <span>addClass</span>
-          </COUNT>
-          <button onClick={()=>setCount(count+1)} className="App-button"  >点击</button>
-
-          {/* useReducer demo */}
-          <p>reducer count:{state.count}</p>
-          <div  className="App-button-group" >
-            <button  onClick={()=>dispatch({type: 'increment'})} >increment</button>
-            <button  onClick={()=>dispatch({type: 'decrement'})} >decrement</button>
-            <button  onClick={()=>dispatch({type: 'reset'})} >reset</button>
-          </div>
-
-          {/* useEffect demo */}
-          <p>当前屏幕宽度：{innerWidth}</p>
-
-          {/* useRef demo */}
-          <p>
-          useRef: <input type='text' ref={inputEl}/><button onClick={focusHandle}>聚焦</button>
-          </p>
-          
-          {/* useContext demo */}
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{color:color}}
+      <div
+        style={{
+          margin: 50,
+        }}
+      >
+        <p>
+          {/* <button onClick={this.forceAlign}>Force align</button> */}
+          &nbsp;&nbsp;&nbsp;
+          <label>
+            <input type="checkbox" checked={this.state.monitor} onChange={this.toggleMonitor} />
+            &nbsp;
+            Monitor window resize
+          </label>
+          <label>
+            <input type="checkbox" checked={this.state.random} onChange={this.toggleRandom} />
+            &nbsp;
+            Random Size
+          </label>
+        </p>
+        <div
+          ref={this.containerRef}
+          id="container"
+          style={{
+            width: '80%',
+            height: 500,
+            border: '1px solid red',
+            ...(random ? {
+              width: `${randomWidth}%`
+            } : null),
+          }}
+        >
+          <Align
+            // ref={this.alignRef}
+            target={this.getTarget}
+            monitorWindowResize={this.state.monitor}
+            align={this.state.align}
           >
-            Learn React
-          </a>
-        </header>
+            <div
+              style={{
+                position: 'absolute',
+                width: 50,
+                height: 50,
+                background: 'yellow',
+              }}
+            >
+              <input
+                defaultValue="source"
+                style={{ width: '100%' }}
+              />
+            </div>
+          </Align>
+        </div>
       </div>
     );
-  
+  }
 }
 
-// export default useHooks(App)
-export default App
+export default Test

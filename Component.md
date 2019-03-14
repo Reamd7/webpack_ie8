@@ -1,5 +1,6 @@
 - [ ] raf polyfill
 - [ ] rc-align
+    - [ ] dom-align ( 未测试 )
 - [x] rc-animate
 - [ ] rc-calendar
 - [ ] rc-cascader
