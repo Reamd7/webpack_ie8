@@ -61,26 +61,6 @@ const defaultProps = {
   disabled: false,
 };
 
-let $id = 0
-let PrivateMap = {}
-function usePrivateVar<T>(V:T) : [
-  ()=>T,
-  (V:T)=>unknown
-]{
-  let Val:T
-  // 初始化时
-  useEffect(()=>{
-    Val = V;
-    return function(){
-      Val = null as any;
-    }
-  },[]);
-  return [
-    ()=>Val,
-    (V:T)=>(Val = V)
-  ]
-}
-
 const Align:React.FunctionComponent<AlignProps> = (function(props:AlignProps){
   props = {
     ...defaultProps,
@@ -91,12 +71,9 @@ const Align:React.FunctionComponent<AlignProps> = (function(props:AlignProps){
     bufferMonitor:null,
     resizeHandler:null
   });
-
-  // let [$sourceRect , update$sourceRect] = useState<ClientRect | null>(null);
-
+  
   let [$PrevProps, setPrevProps] = useState<AlignProps>(props);
   let [$SourceRect , setSourceRect] = useState<ClientRect | null>(null);
-
   let forceAlign = useMemo(()=>function(
   ){
     const disabled =  !!props.disabled
